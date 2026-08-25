@@ -3,6 +3,20 @@
 RecoverAI explicitly separates AI generation from deterministic financial execution.
 
 ## System Flow
+
+```mermaid
+flowchart TD
+    A[Ingest: Raw Failure Event] --> B{Classify: LLM}
+    B -->|Confidence < 0.6| C[Escalate to Human]
+    B -->|Confidence >= 0.6| D[Standardized RootCause]
+    D --> E{Guardrail Check}
+    E -->|Fails limits/rules| C
+    E -->|Passes| F[Decide Action: Deterministic Rules Engine]
+    F --> G[Execute Action]
+    G --> H[Audit & Report]
+    C --> H
+```
+
 1. **Ingest**: The system pulls open payment failure events from `revenue_events`.
 2. **Classify (LLM)**: A constrained LLM request (Zod schema) attempts to map the messy, raw failure reason to a standardized `RootCause`. It outputs confidence (0.0 to 1.0) and a human-readable reasoning string.
 3. **Score & Gate**: If LLM confidence < 0.6, the event is escalated.
