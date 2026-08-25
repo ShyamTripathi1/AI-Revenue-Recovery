@@ -1,0 +1,5 @@
+/* App-level overrides */
+/* Recharts overrides */
+.recharts-wrapper {
+  font-family: 'Inter', sans-serif;
+}
