@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: recoverai-backend
+    env: node
+    buildCommand: "cd backend && npm install && npm run build"
+    startCommand: "cd backend && npm start"
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DB_PATH
+        value: /data/database.sqlite
+      - key: OPENAI_API_KEY
+        sync: false
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1

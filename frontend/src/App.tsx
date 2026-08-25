@@ -64,6 +64,8 @@ type Tab = 'dashboard' | 'events' | 'analytics' | 'exceptions';
 
 const CHART_COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#f43f5e', '#38bdf8', '#a78bfa', '#34d399'];
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; dot: string }> = {
   recovered:    { label: 'Recovered',    color: 'text-success',   bg: 'bg-success/10',   dot: 'bg-success' },
   in_progress:  { label: 'In Progress',  color: 'text-info',      bg: 'bg-info/10',       dot: 'bg-info animate-pulse' },
@@ -142,9 +144,9 @@ export default function App() {
   const fetchState = async () => {
     try {
       const [mRes, eRes, cRes] = await Promise.all([
-        fetch('http://localhost:3000/api/metrics'),
-        fetch('http://localhost:3000/api/events'),
-        fetch('http://localhost:3000/api/charts'),
+        fetch(`${API_URL}/api/metrics`),
+        fetch(`${API_URL}/api/events`),
+        fetch(`${API_URL}/api/charts`),
       ]);
       setMetrics(await mRes.json());
       setEvents(await eRes.json());
@@ -165,7 +167,7 @@ export default function App() {
 
   const runBatch = async () => {
     setBatchRunning(true);
-    await fetch('http://localhost:3000/api/run-batch', { method: 'POST' });
+    await fetch(`${API_URL}/api/run-batch`, { method: 'POST' });
     setTimeout(() => {
       setBatchRunning(false);
       fetchState();
@@ -174,7 +176,7 @@ export default function App() {
 
   const resetDb = async () => {
     setResetting(true);
-    await fetch('http://localhost:3000/api/reset', { method: 'POST' });
+    await fetch(`${API_URL}/api/reset`, { method: 'POST' });
     setTimeout(() => {
       setResetting(false);
       fetchState();

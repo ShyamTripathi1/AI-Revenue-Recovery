@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-const dbPath = path.resolve(__dirname, '../../database.sqlite');
+const dbPath = process.env.DB_PATH || path.resolve(__dirname, '../../database.sqlite');
 export const db = new Database(dbPath);
 
 export function initDb() {
