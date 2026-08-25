@@ -21,7 +21,7 @@ const ClassificationSchema = z.object({
 
 async function classifyEvent(failureReasonRaw: string, amount: number, stage: string | null) {
   if (process.env.OPENAI_API_KEY) {
-    const completion = await openai.beta.chat.completions.parse({
+    const completion = await (openai as any).beta.chat.completions.parse({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: "You are an AI revenue recovery classifier. Determine the root cause of a payment failure based on raw logs." },
